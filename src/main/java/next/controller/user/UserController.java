@@ -2,6 +2,7 @@ package next.controller.user;
 
 import javax.servlet.http.HttpSession;
 
+import next.UnAuthorizedException;
 import next.annotation.LoginUser;
 import next.controller.UserSessionUtils;
 import next.dao.UserDao;
@@ -9,13 +10,13 @@ import next.model.User;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@ControllerAdvice
 @RequestMapping("/users")
 public class UserController {
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
@@ -108,5 +109,16 @@ public class UserController {
     public String logout(HttpSession session) throws Exception {
         session.removeAttribute(UserSessionUtils.USER_SESSION_KEY);
         return "redirect:/";
+    }
+
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    public String admin() throws UnAuthorizedException {
+	    throw new UnAuthorizedException("관리자가 아니면 접근할 수 없습니다.");
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(value = UnAuthorizedException.class)
+    public String unAuthorizedExceptionHandler(UnAuthorizedException e) {
+	    return e.getMessage();
     }
 }
