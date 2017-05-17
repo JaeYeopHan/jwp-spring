@@ -83,4 +83,21 @@ public class QnaServiceTest {
         when(answerDao.findAllByQuestionId(0)).thenReturn(new ArrayList<>());
         qnaService.deleteQuestion(0, user);
     }
+
+    @Test
+    public void 질문한_사람과_로그인한_사람이_같으면서_답변의_글쓴이가_다른_경우() throws CannotOperateException {
+        Question question = new Question();
+
+        User user = new User("1", "123", "Jbee", "ad");
+        User otherUser = new User("2", "123", "aaee", "ad");
+        Question newQuestion = question.newQuestion(user);
+
+        when(questionDao.findById(0)).thenReturn(newQuestion);
+        List<Answer> answers = new ArrayList<>();
+        Answer answer = new Answer();
+        answers.add(answer.newAnswer(otherUser));
+
+        when(answerDao.findAllByQuestionId(0)).thenReturn(new ArrayList<>());
+        qnaService.deleteQuestion(0, user);
+    }
 }
