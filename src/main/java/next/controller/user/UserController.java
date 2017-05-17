@@ -1,11 +1,9 @@
 package next.controller.user;
 
-import javax.servlet.http.HttpSession;
-
+import core.web.argumentresolver.LoginUser;
 import next.controller.UserSessionUtils;
 import next.dao.UserDao;
 import next.model.User;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -14,14 +12,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import core.web.argumentresolver.LoginUser;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-	private UserDao userDao = UserDao.getInstance();
+    private UserDao userDao;
+
+    public UserController(UserDao userDao) {//userDao를 바꿀 수 있는 통로가 생겼다!
+        this.userDao = userDao;
+    }
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
     public String index(@LoginUser User loginUser, Model model) throws Exception {
