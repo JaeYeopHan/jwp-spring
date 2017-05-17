@@ -2,29 +2,24 @@ package next.service;
 
 import java.util.List;
 
+import next.dao.AnswerDao;
+import next.dao.AnswerDaoInterface;
+import next.dao.QuestionDaoInterface;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import next.CannotOperateException;
-import next.dao.AnswerDao;
 import next.dao.QuestionDao;
 import next.model.Answer;
 import next.model.Question;
 import next.model.User;
 
 public class QnaService {
-	private static QnaService qnaService;
+	private QuestionDaoInterface questionDao;
+	private AnswerDaoInterface answerDao;
 
-	private QuestionDao questionDao = QuestionDao.getInstance();
-	private AnswerDao answerDao = AnswerDao.getInstance();
-
-	private QnaService() {
-	}
-
-	public static QnaService getInstance() {
-		if (qnaService == null) {
-			qnaService = new QnaService();
-		}
-		return qnaService;
+	public QnaService(QuestionDao questionDao, AnswerDao answerDao) {
+		this.questionDao = questionDao;
+		this.answerDao = answerDao;
 	}
 
 	public Question findById(long questionId) {

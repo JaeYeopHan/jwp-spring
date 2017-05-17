@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import next.CannotOperateException;
-import next.dao.AnswerDao;
+import next.dao.AnswerDaoInterface;
 import next.dao.QuestionDao;
 import next.model.Answer;
 import next.model.Question;
@@ -30,7 +30,7 @@ public class ApiQuestionController {
 	private Logger log = LoggerFactory.getLogger(ApiQuestionController.class);
 	
 	private QuestionDao questionDao = QuestionDao.getInstance();
-	private AnswerDao answerDao = AnswerDao.getInstance();
+	private AnswerDaoInterface answerDao = AnswerDaoInterface.getInstance();
 	private QnaService qnaService = QnaService.getInstance();
 	
 	@RequestMapping(value="/{questionId}", method=RequestMethod.DELETE)
