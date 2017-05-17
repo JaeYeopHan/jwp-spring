@@ -17,6 +17,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -53,10 +54,8 @@ public class QnaServiceTest {
     @Test
     public void 질문한_사람과_로그인한_사람이_같으면서_답변이_없는_경우() throws CannotOperateException {
         Question question = new Question();
-
         User user = new User("1", "123", "Jbee", "ad");
         Question newQuestion = question.newQuestion(user);
-
         when(questionDao.findById(0)).thenReturn(newQuestion);
         when(answerDao.findAllByQuestionId(0)).thenReturn(new ArrayList<>());
         qnaService.deleteQuestion(0, user);
@@ -65,20 +64,18 @@ public class QnaServiceTest {
     @Test
     public void 질문한_사람과_로그인한_사람이_같으면서_답변의_글쓴이도_같은_경우() throws CannotOperateException {
         Question question = new Question();
-
         User user = new User("1", "123", "Jbee", "ad");
         Question newQuestion = question.newQuestion(user);
-
         when(questionDao.findById(0)).thenReturn(newQuestion);
         List<Answer> answers = new ArrayList<>();
         Answer answer = new Answer();
         answers.add(answer.newAnswer(user));
-
         when(answerDao.findAllByQuestionId(0)).thenReturn(new ArrayList<>());
         qnaService.deleteQuestion(0, user);
+        verify(questionDao).delete(0);
     }
 
-    @Test
+    @Test(expected = CannotOperateException.class)
     public void 질문한_사람과_로그인한_사람이_같으면서_답변의_글쓴이가_다른_경우() throws CannotOperateException {
         Question question = new Question();
 
@@ -91,7 +88,7 @@ public class QnaServiceTest {
         Answer answer = new Answer();
         answers.add(answer.newAnswer(otherUser));
 
-        when(answerDao.findAllByQuestionId(0)).thenReturn(new ArrayList<>());
+        when(answerDao.findAllByQuestionId(0)).thenReturn(answers);
         qnaService.deleteQuestion(0, user);
     }
 }
