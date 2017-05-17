@@ -14,9 +14,11 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.objenesis.instantiator.android.AndroidSerializationInstantiator;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
@@ -62,6 +64,22 @@ public class QnaServiceTest {
         Question newQuestion = question.newQuestion(user);
 
         when(questionDao.findById(0)).thenReturn(newQuestion);
+        when(answerDao.findAllByQuestionId(0)).thenReturn(new ArrayList<>());
+        qnaService.deleteQuestion(0, user);
+    }
+
+    @Test
+    public void 질문한_사람과_로그인한_사람이_같으면서_답변의_글쓴이도_같은_경우() throws CannotOperateException {
+        Question question = new Question();
+
+        User user = new User("1", "123", "Jbee", "ad");
+        Question newQuestion = question.newQuestion(user);
+
+        when(questionDao.findById(0)).thenReturn(newQuestion);
+        List<Answer> answers = new ArrayList<>();
+        Answer answer = new Answer();
+        answers.add(answer.newAnswer(user));
+
         when(answerDao.findAllByQuestionId(0)).thenReturn(new ArrayList<>());
         qnaService.deleteQuestion(0, user);
     }

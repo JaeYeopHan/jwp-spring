@@ -12,7 +12,8 @@ public class Answer {
 	private Date createdDate;
 
 	private long questionId;
-	
+
+	public Answer() {}
 	public Answer(String writer, String contents, long questionId) {
 		this(0, writer, contents, new Date(), questionId);
 	}
@@ -52,7 +53,11 @@ public class Answer {
 	public boolean isSameUser(User user) {
 		return user.isSameUser(this.writer);
 	}
-	
+
+	public Answer newAnswer(User user) {
+		return new Answer(user.getUserId(), contents, questionId);
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
