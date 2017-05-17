@@ -52,4 +52,17 @@ public class QnaServiceTest {
         when(answerDao.findAllByQuestionId(1)).thenReturn(new ArrayList<>());
         qnaService.deleteQuestion(1, new User("1", "123", "Jbee", "ad"));
     }
+
+
+    @Test
+    public void 질문한_사람과_로그인한_사람이_같으면서_답변이_없는_경우() throws CannotOperateException {
+        Question question = new Question();
+
+        User user = new User("1", "123", "Jbee", "ad");
+        Question newQuestion = question.newQuestion(user);
+
+        when(questionDao.findById(0)).thenReturn(newQuestion);
+        when(answerDao.findAllByQuestionId(0)).thenReturn(new ArrayList<>());
+        qnaService.deleteQuestion(0, user);
+    }
 }
