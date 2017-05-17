@@ -8,12 +8,6 @@ import java.util.List;
  * Created by Jbee on 2017. 5. 17..
  */
 public interface QuestionDaoInterface {
-    static QuestionDao getInstance() {
-        if (QuestionDao.questionDao == null) {
-            QuestionDao.questionDao = new QuestionDao();
-        }
-        return QuestionDao.questionDao;
-    }
 
     Question insert(Question question);
 

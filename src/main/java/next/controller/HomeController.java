@@ -9,12 +9,12 @@ import next.dao.QuestionDao;
 
 @Controller
 public class HomeController {
-	private QuestionDao questionDao = QuestionDao.getInstance();
-
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView home() throws Exception {
-		ModelAndView mav = new ModelAndView("index");
-		mav.addObject("questions", questionDao.findAll());
-		return mav;
-	}
+//	private QuestionDao questionDao = QuestionDao.getInstance();
+//
+//	@RequestMapping(value = "/", method = RequestMethod.GET)
+//	public ModelAndView home() throws Exception {
+//		ModelAndView mav = new ModelAndView("index");
+//		mav.addObject("questions", questionDao.findAll());
+//		return mav;
+//	}
 }
