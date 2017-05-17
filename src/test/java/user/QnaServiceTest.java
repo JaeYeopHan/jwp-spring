@@ -1,8 +1,10 @@
 package user;
 
 import next.CannotOperateException;
+import next.controller.UserSessionUtils;
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;
+import next.model.Answer;
 import next.model.Question;
 import next.model.User;
 import next.service.QnaService;
@@ -13,6 +15,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.dao.EmptyResultDataAccessException;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
@@ -38,6 +42,14 @@ public class QnaServiceTest {
     @Test(expected = EmptyResultDataAccessException.class)
     public void 질문이_존재하지_않은_경우() throws CannotOperateException {
         when(questionDao.findById(1)).thenReturn(null);
+        qnaService.deleteQuestion(1, new User("1", "123", "Jbee", "ad"));
+    }
+
+    @Test(expected = CannotOperateException.class)
+    public void 질문한_사람과_로그인한_사람이_다른_경우() throws CannotOperateException {
+        Question question = new Question("temp", "", "");
+        when(questionDao.findById(1)).thenReturn(question);
+        when(answerDao.findAllByQuestionId(1)).thenReturn(new ArrayList<>());
         qnaService.deleteQuestion(1, new User("1", "123", "Jbee", "ad"));
     }
 }
