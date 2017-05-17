@@ -1,7 +1,6 @@
 package user;
 
 import next.CannotOperateException;
-import next.controller.UserSessionUtils;
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;
 import next.model.Answer;
@@ -10,19 +9,14 @@ import next.model.User;
 import next.service.QnaService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.objenesis.instantiator.android.AndroidSerializationInstantiator;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
