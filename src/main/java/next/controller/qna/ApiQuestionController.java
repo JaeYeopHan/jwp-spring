@@ -35,7 +35,6 @@ public class ApiQuestionController {
 
 	@Autowired
 	private AnswerDao answerDao;
-
 	@Autowired
 	private QnaService qnaService;
 	

@@ -1,19 +1,16 @@
 package next.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.List;
-
 import next.model.Answer;
-import core.jdbc.JdbcTemplate;
-import core.jdbc.KeyHolder;
-import core.jdbc.PreparedStatementCreator;
-import core.jdbc.RowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
+import java.sql.*;
+import java.util.List;
 
 @Repository
 public class AnswerDao {
@@ -24,20 +21,20 @@ public class AnswerDao {
     public Answer insert(Answer answer) {
         String sql = "INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)";
         PreparedStatementCreator psc = new PreparedStatementCreator() {
-			@Override
-			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				PreparedStatement pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, answer.getWriter());
-				pstmt.setString(2, answer.getContents());
-				pstmt.setTimestamp(3, new Timestamp(answer.getTimeFromCreateDate()));
-				pstmt.setLong(4, answer.getQuestionId());
-				return pstmt;
-			}
-		};
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement pstmt = con.prepareStatement(sql);
+                pstmt.setString(1, answer.getWriter());
+                pstmt.setString(2, answer.getContents());
+                pstmt.setTimestamp(3, new Timestamp(answer.getTimeFromCreateDate()));
+                pstmt.setLong(4, answer.getQuestionId());
+                return pstmt;
+            }
+        };
         
-		KeyHolder keyHolder = new KeyHolder();
+		KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(psc, keyHolder);
-        return findById(keyHolder.getId());
+        return findById((Long) keyHolder.getKey());
     }
 
     public Answer findById(long answerId) {
@@ -45,7 +42,7 @@ public class AnswerDao {
 
         RowMapper<Answer> rm = new RowMapper<Answer>() {
             @Override
-            public Answer mapRow(ResultSet rs) throws SQLException {
+            public Answer mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return new Answer(rs.getLong("answerId"), rs.getString("writer"), rs.getString("contents"),
                         rs.getTimestamp("createdDate"), rs.getLong("questionId"));
             }
@@ -60,7 +57,7 @@ public class AnswerDao {
 
         RowMapper<Answer> rm = new RowMapper<Answer>() {
             @Override
-            public Answer mapRow(ResultSet rs) throws SQLException {
+            public Answer mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return new Answer(rs.getLong("answerId"), rs.getString("writer"), rs.getString("contents"),
                         rs.getTimestamp("createdDate"), questionId);
             }
