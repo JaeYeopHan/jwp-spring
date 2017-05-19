@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Maps;
 
-import core.jdbc.DataAccessException;
+import next.service.DataAccessException;
 import core.web.argumentresolver.LoginUser;
 
 @RestController

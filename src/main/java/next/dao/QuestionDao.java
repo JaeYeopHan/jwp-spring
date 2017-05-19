@@ -34,7 +34,7 @@ public class QuestionDao {
 		};
         
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(String.valueOf(psc), keyHolder);
+        jdbcTemplate.update(psc, keyHolder);
         return findById((Long) keyHolder.getKey());
     }
 	
