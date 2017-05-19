@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.google.common.collect.Lists;
@@ -27,14 +28,10 @@ public class QnaServiceTest {
     private QuestionDao questionDao;
     @Mock
     private AnswerDao answerDao;
-    
+
+    @Autowired
     private QnaService qnaService;
 
-    @Before
-    public void setup() {
-    	qnaService = new QnaService(questionDao, answerDao);
-    }
-    
     @Test(expected = EmptyResultDataAccessException.class)
     public void deleteQuestion_없는_질문() throws Exception {
         when(questionDao.findById(1L)).thenReturn(null);

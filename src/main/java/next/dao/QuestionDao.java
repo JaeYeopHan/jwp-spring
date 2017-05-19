@@ -12,20 +12,15 @@ import core.jdbc.KeyHolder;
 import core.jdbc.PreparedStatementCreator;
 import core.jdbc.RowMapper;
 import next.model.Question;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class QuestionDao {
-	private static QuestionDao questionDao;
-	private JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
-	
-	private QuestionDao() {}
-	
-	public static QuestionDao getInstance() {
-		if (questionDao == null) {
-			questionDao = new QuestionDao();
-		}
-		return questionDao;
-	}
-	
+
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+
     public Question insert(Question question) {
         String sql = "INSERT INTO QUESTIONS (writer, title, contents, createdDate) VALUES (?, ?, ?, ?)";
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -41,7 +36,7 @@ public class QuestionDao {
 		};
         
 		KeyHolder keyHolder = new KeyHolder();
-        jdbcTemplate.update(psc, keyHolder);
+        jdbcTemplate.update(String.valueOf(psc), keyHolder);
         return findById(keyHolder.getId());
     }
 	

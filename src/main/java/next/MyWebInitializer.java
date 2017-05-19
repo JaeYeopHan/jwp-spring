@@ -1,19 +1,18 @@
 package next;
 
-import java.util.EnumSet;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-
+import next.config.AppConfig;
+import next.config.WebMvcConfig;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import next.config.WebMvcConfig;
+import javax.servlet.DispatcherType;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+import java.util.EnumSet;
 
 public class MyWebInitializer implements WebApplicationInitializer {
 	@Override
@@ -28,6 +27,7 @@ public class MyWebInitializer implements WebApplicationInitializer {
 
 		AnnotationConfigWebApplicationContext webContext = new AnnotationConfigWebApplicationContext();
 		webContext.register(WebMvcConfig.class);
+		webContext.register(AppConfig.class);
 		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("next", new DispatcherServlet(webContext));
 		dispatcher.setLoadOnStartup(1);
 		dispatcher.addMapping("/");

@@ -7,20 +7,15 @@ import java.util.List;
 import next.model.User;
 import core.jdbc.JdbcTemplate;
 import core.jdbc.RowMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class UserDao {
-	private static UserDao userDao;
-	private JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
-	
-	private UserDao() {}
-	
-	public static UserDao getInstance() {
-		if (userDao == null) {
-			userDao = new UserDao();
-		}
-		return userDao;
-	}
-	
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     public void insert(User user) {
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, user.getUserId(),
