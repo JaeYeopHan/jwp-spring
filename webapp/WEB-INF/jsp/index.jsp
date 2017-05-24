@@ -17,7 +17,6 @@
 				<li>
 					<div class="wrap">
 						<div class="main">
-							Hello world!
 							<strong class="subject">
 								<a href="/questions/${each.questionId}">${each.title}</a>
 							</strong>
@@ -55,7 +54,7 @@
 		</div>
 	</div>
 </div>
-
+Hello world!!
 <%@ include file="/include/footer.jspf" %>
 </body>
 </html>
