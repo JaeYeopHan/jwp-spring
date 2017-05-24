@@ -54,7 +54,6 @@
 		</div>
 	</div>
 </div>
-Hello world!!
 <%@ include file="/include/footer.jspf" %>
 </body>
 </html>
